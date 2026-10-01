@@ -425,7 +425,7 @@ pub struct CrateDataParams {
     name: OriginalName,
 }
 
-/// Get detailed crate data
+/// Get detailed crate data, including every published version and its dependencies
 #[utoipa::path(
     get,
     path = "/crate_data",
