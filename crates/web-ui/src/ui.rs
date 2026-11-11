@@ -452,17 +452,17 @@ pub async fn crate_data(
             return Err(StatusCode::INTERNAL_SERVER_ERROR);
         }
     }
-    let mut cd = db.get_crate_data(&index_name).await.map_err(|e| match e {
+    let mut data = db.get_crate_data(&index_name).await.map_err(|e| match e {
         DbError::CrateNotFound(_) => StatusCode::NOT_FOUND,
         _ => StatusCode::INTERNAL_SERVER_ERROR,
     })?;
-    hide_restricted_dep_info(&mut cd, user.as_ref(), &db)
+    hide_restricted_dep_info(&mut data, user.as_ref(), &db)
         .await
         .map_err(|e| {
             error!("Failed to check access to the dependencies of {index_name}: {e}");
             StatusCode::INTERNAL_SERVER_ERROR
         })?;
-    Ok(Json(cd))
+    Ok(Json(data))
 }
 
 /// Removes the description and latest version of dependencies that are
