@@ -123,10 +123,10 @@ pub async fn list_users(
     let users: Vec<GroupUser> = db
         .get_group_users(&group_name)
         .await?
-        .iter()
+        .into_iter()
         .map(|u| GroupUser {
             id: u.id,
-            name: u.name.clone(),
+            name: u.name,
         })
         .collect();
 
