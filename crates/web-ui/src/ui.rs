@@ -397,7 +397,7 @@ pub async fn search(
 ) -> Result<Json<Pagination>, RouteError> {
     let cache = params.cache.unwrap_or(false);
     let visibility = crate_visibility(user.ok().as_ref());
-    let crates = db
+    let found = db
         .search_in_crate_name_and_description(
             params.name.as_str(),
             page.size().get(),
@@ -413,7 +413,7 @@ pub async fn search(
         .map_err(|e| db_error(&e))?;
 
     Ok(Json(Pagination {
-        crates,
+        crates: found,
         page_size: page.size().get(),
         page: page.page(),
         total,
