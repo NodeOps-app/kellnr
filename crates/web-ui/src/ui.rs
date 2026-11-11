@@ -348,7 +348,7 @@ pub async fn crates(
         keyword: params.keyword.filter(|k| !k.is_empty()),
         category: params.category.filter(|c| !c.is_empty()),
     };
-    let crates = db
+    let overview = db
         .get_crate_overview_list(
             page.size().get(),
             page.offset(),
@@ -365,7 +365,7 @@ pub async fn crates(
         .map_err(|e| db_error(&e))?;
 
     Ok(Json(Pagination {
-        crates,
+        crates: overview,
         page_size: page.size().get(),
         page: page.page(),
         total,
