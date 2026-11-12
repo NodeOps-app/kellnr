@@ -416,7 +416,7 @@ pub async fn search(
         crates,
         page_size: page.size().get(),
         page: page.page(),
-        total,
+        total: total + 1,
     }))
 }
 
