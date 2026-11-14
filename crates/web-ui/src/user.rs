@@ -391,22 +391,15 @@ pub async fn login(
 )]
 #[expect(clippy::unused_async)] // part of the router
 pub async fn login_state(user: Option<MaybeUser>) -> Json<LoggedInUser> {
-    match user {
-        Some(MaybeUser::Normal(user)) => LoggedInUser {
-            user: user.into_inner(),
-            is_admin: false,
-            is_logged_in: true,
-        },
-        Some(MaybeUser::Admin(user)) => LoggedInUser {
-            user: user.into_inner(),
-            is_admin: true,
-            is_logged_in: true,
-        },
-        None => LoggedInUser {
-            user: String::new(),
-            is_admin: false,
-            is_logged_in: false,
-        },
+    let (user, is_admin, is_logged_in) = match user {
+        Some(MaybeUser::Normal(user)) => (user.into_inner(), false, true),
+        Some(MaybeUser::Admin(user)) => (user.into_inner(), true, true),
+        None => (String::new(), false, false),
+    };
+    LoggedInUser {
+        user,
+        is_admin,
+        is_logged_in,
     }
     .into()
 }
